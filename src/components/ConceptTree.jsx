@@ -1,0 +1,99 @@
+import { memo } from 'react';
+import StatusIcon from './StatusIcon';
+
+const ConceptTree = memo(function ConceptTree({ node, currentNodeId, selections, currentPath, setCurrentPath }) {
+  const isSelected = !!selections[node.id];
+  const isRoot = node.id === 'root';
+  
+  const visibleChildren = node.children ? node.children.filter(child => {
+    return selections[child.id] || 
+           selections[node.id] || 
+           child.id === currentPath[1] || 
+           isRoot;
+  }) : [];
+  
+  const isCurrent = currentNodeId === node.id;
+  const hasVisibleChildren = visibleChildren.length > 0;
+
+
+
+  // Determinar el color de fondo según el estado
+  const getBackgroundColor = () => {
+    if (!isSelected) return 'bg-white';
+    const status = selections[node.id]?.status;
+    if (status === 'done') return 'bg-green-100';
+    if (status === 'pending') return 'bg-[#FFF8E1]'; // Amarillo más suave y elegante
+    return 'bg-white';
+  };
+
+  // Determinar el color de borde y sombra según el estado
+  const getBorderAndShadow = () => {
+    if (isCurrent) {
+      if (isSelected) {
+        const status = selections[node.id]?.status;
+        if (status === 'done') return 'border-[#005C35] ring-2 ring-[#005C35]/20 shadow-lg scale-105';
+        if (status === 'pending') return 'border-[#F2A900] ring-2 ring-[#F2A900]/20 shadow-lg scale-105';
+      }
+      return 'border-[#005C35] ring-2 ring-[#005C35]/20 shadow-lg scale-105';
+    }
+    return 'border-gray-200 shadow-sm';
+  };
+
+  return (
+    <li>
+      <div 
+        onClick={() => {
+          if (node.id === 'root') setCurrentPath(['root']);
+        }}
+        className={`
+          node-card relative inline-flex flex-col items-center p-3 rounded-xl border-2 transition-all z-10
+          ${getBorderAndShadow()}
+          ${getBackgroundColor()}
+          ${isRoot ? 'cursor-pointer hover:border-[#005C35]/50' : 'cursor-default'}
+        `}
+        role={isRoot ? "button" : "presentation"}
+        tabIndex={isRoot ? 0 : -1}
+        aria-label={`Nodo: ${node.title}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (node.id === 'root') setCurrentPath(['root']);
+          }
+        }}
+      >
+        <div className="flex items-center gap-2 mb-1">
+          {isSelected ? (
+            <StatusIcon status={selections[node.id]?.status} className="w-5 h-5" />
+          ) : (
+            <div className={`w-4 h-4 rounded-full border-2 ${isRoot ? 'bg-[#005C35] border-[#005C35]' : 'border-gray-300'}`} />
+          )}
+          <span className={`font-bold whitespace-nowrap ${isRoot ? 'text-lg text-[#005C35]' : 'text-sm text-gray-700'}`}>
+            {node.title}
+          </span>
+        </div>
+        {!isRoot && (
+          <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full max-w-[150px] truncate text-center ${isSelected ? (selections[node.id].status === 'done' ? 'text-[#005C35] bg-[#005C35]/10' : 'text-[#b58500] bg-[#F2A900]/20') : 'text-gray-400 bg-gray-100'}`}>
+            {isSelected ? (selections[node.id].status === 'done' ? 'Implementado' : 'Pendiente') : 'Disponible'}
+          </span>
+        )}
+      </div>
+
+      {hasVisibleChildren && (
+        <ul>
+          {visibleChildren.map(child => (
+            <ConceptTree 
+              key={child.id} 
+              node={child}
+              currentNodeId={currentNodeId}
+              selections={selections}
+              currentPath={currentPath}
+              setCurrentPath={setCurrentPath}
+            />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+});
+
+export default ConceptTree;

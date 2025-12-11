@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* Importar fuente Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Scrollbar implícito y sutil */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+
+
+/* Estilos del Árbol Conceptual */
+.tree ul {
+  padding-top: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.tree li {
+  display: inline-block;
+  text-align: center;
+  list-style-type: none;
+  position: relative;
+  padding: 20px 15px 0 15px;
+  vertical-align: top;
+}
+
+
+
+/* Líneas conectoras */
+.tree li::before,
+.tree li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 50%;
+  border-top: 2px solid #005C35;
+  opacity: 0.3;
+  width: 50%;
+  height: 20px;
+}
+
+.tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 2px solid #005C35;
+}
+
+.tree li:only-child::after,
+.tree li:only-child::before {
+  display: none;
+}
+
+.tree li:only-child {
+  padding-top: 0;
+}
+
+.tree li:first-child::before,
+.tree li:last-child::after {
+  border: 0 none;
+}
+
+.tree li:last-child::before {
+  border-right: 2px solid #005C35;
+  border-radius: 0 5px 0 0;
+}
+
+.tree li:first-child::after {
+  border-radius: 5px 0 0 0;
+}
+
+.tree ul ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 2px solid #005C35;
+  opacity: 0.3;
+  width: 0;
+  height: 20px;
+}
