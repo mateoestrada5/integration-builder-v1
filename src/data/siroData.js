@@ -11,7 +11,7 @@ export const SIRO_DATA = {
   id: 'root',
   title: 'Nodo Raíz',
   type: 'root',
-  description: 'Este es el nodo principal del árbol. Aquí iría la descripción general del servicio.',
+  description: 'Este es el nodo principal del árbol. Aquí iría la descripción general del servicio V1.',
   children: [
     {
       id: 'node_1',
