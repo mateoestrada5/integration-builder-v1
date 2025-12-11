@@ -6,7 +6,7 @@ export default function Header() {
     <header className="m-4 mb-0 p-4 bg-white border-2 border-[#005C35] rounded-tl-3xl rounded-tr-3xl rounded-br-3xl flex justify-between items-center shadow-sm">
       <div className="flex items-center">
         <img 
-          src="/logoSiro.png" 
+          src="https://mateoestrada5.github.io/integration-builder-v1/logoSiro.png"
           alt="SIRO Logo" 
           className="h-10 object-contain"
           onError={(e) => {
